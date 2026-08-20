@@ -1,0 +1,130 @@
+
+def agregar_estudiante(estudiantes):
+    print("\n--- AGREGAR ESTUDIANTE ---")
+    while True:
+        id_est = input("ID del estudiante: ").strip().upper()
+        if not id_est:
+            print("El ID no puede estar vacío.")
+            continue
+        if id_est in estudiantes:
+            print("El ID ya existe. Intente con otro.")
+        else:
+            break
+
+    nombre = input("Nombre completo: ").strip()
+
+    while True:
+        try:
+            edad = int(input("Edad: "))
+            if edad <= 0:
+                print("La edad debe ser mayor a 0.")
+                continue
+            break
+        except ValueError:
+            print("Edad debe ser un número entero.")
+
+    calificaciones = []
+    print("Ingrese las calificaciones (ingrese 0 para terminar):")
+    while True:
+        try:
+            nota = float(input("Nota: "))
+            if nota == 0:
+                break
+            if nota < 0 or nota > 100:
+                print("Por favor, ingrese una nota válida (1 a 100).")
+                continue
+            calificaciones.append(nota)
+        except ValueError:
+            print("Ingrese un número válido.")
+
+    estudiantes[id_est] = {
+        "nombre": nombre,
+        "edad": edad,
+        "calificaciones": calificaciones
+    }
+    print(f"\n¡Estudiante {nombre} agregado con éxito!")
+
+
+def mostrar_estudiantes(estudiantes):
+    print("\n--- LISTA DE ESTUDIANTES ---")
+    if not estudiantes:
+        print("No hay estudiantes registrados.")
+        return
+
+    for id_est, datos in estudiantes.items():
+        print(f"\nID: {id_est}")
+        print(f"  Nombre: {datos['nombre']}")
+        print(f"  Edad: {datos['edad']}")
+        print(f"  Calificaciones: {datos['calificaciones']}")
+
+
+def mostrar_promedio(estudiantes):
+    print("\n--- CALCULAR PROMEDIO ---")
+    if not estudiantes:
+        print("No hay estudiantes registrados.")
+        return
+
+    id_est = input("Ingrese el ID del estudiante: ").strip().upper()
+    if id_est in estudiantes:
+        datos = estudiantes[id_est]
+        notas = datos['calificaciones']
+        promedio = sum(notas) / len(notas) if notas else 0
+        print(f"\nEstudiante {id_est}")
+        print(f"{datos['nombre']} - Promedio: {promedio:.1f}")
+    else:
+        print("Estudiante no encontrado.")
+
+
+def eliminar_estudiante(estudiantes):
+    print("\n--- ELIMINAR ESTUDIANTE ---")
+    if not estudiantes:
+        print("No hay estudiantes registrados.")
+        return
+
+    id_est = input("Ingrese el ID del estudiante a eliminar: ").strip().upper()
+    if id_est in estudiantes:
+        confirmar = input(f"¿Está seguro de eliminar a {estudiantes[id_est]['nombre']}? (s/n): ").strip().lower()
+        if confirmar == 's':
+            del estudiantes[id_est]
+            print("Estudiante eliminado correctamente.")
+        else:
+            print("Operación cancelada.")
+    else:
+        print("Estudiante no encontrado.")
+
+
+def menu():
+    estudiantes = {
+        "A001": {"nombre": "Ana Torres", "edad": 20, "calificaciones": [90.0, 85.0, 78.0]},
+        "A002": {"nombre": "Luis Pérez", "edad": 22, "calificaciones": [88.0, 91.0, 79.0]}
+    }
+
+    while True:
+        print("\n" + "=" * 40)
+        print("       GESTOR DE ESTUDIANTES")
+        print("=" * 40)
+        print("1. Agregar estudiante")
+        print("2. Mostrar todos los estudiantes")
+        print("3. Calcular promedio de un estudiante")
+        print("4. Eliminar estudiante")
+        print("5. Salir")
+        print("=" * 40)
+
+        opcion = input("Seleccione una opción: ").strip()
+
+        if opcion == '1':
+            agregar_estudiante(estudiantes)
+        elif opcion == '2':
+            mostrar_estudiantes(estudiantes)
+        elif opcion == '3':
+            mostrar_promedio(estudiantes)
+        elif opcion == '4':
+            eliminar_estudiante(estudiantes)
+        elif opcion == '5':
+            print("¡Hasta luego!")
+            break
+        else:
+            print("Opción inválida. Intente de nuevo.")
+
+
+menu()
