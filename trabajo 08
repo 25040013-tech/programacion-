@@ -1,0 +1,37 @@
+import random
+import sys
+
+
+def generar_numeros(cantidad):
+    """Genera una lista de números aleatorios."""
+    return [random.randint(1, 50) for _ in range(cantidad)]
+
+
+def main():
+    
+    if len(sys.argv) < 2:
+        print("Uso: python programa.py <cantidad_de_numeros>")
+        sys.exit(1)
+
+
+    try:
+        cantidad = int(sys.argv[1])
+        if cantidad <= 0:
+            print("Error: El número debe ser mayor a 0")
+            sys.exit(1)
+    except ValueError:
+        print("Error: Debe ingresar un número entero válido")
+        sys.exit(1)
+
+    
+    numeros = generar_numeros(cantidad)
+
+    
+    resultado = " ".join(map(str, numeros))
+    print(resultado)
+
+
+if __name__ == "__main__":
+    main()
+
+    
